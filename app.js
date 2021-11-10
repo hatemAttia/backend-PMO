@@ -11,8 +11,7 @@ import routes from "./routes/routes";
 var app = express();
 const mongoose = require("mongoose");
 // Set up mongoose connection
-let dev_db_url = 'mongodb+srv://hatem:hatem123@tfarhida.yucrv.mongodb.net/tfarhida?retryWrites=true&w=majority';
-
+let dev_db_url = 'mongodb+srv://dbBasma:@basma123@dbpmo.fb9qa.mongodb.net/dbPmo?retryWrites=true&w=majority';
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
 mongoose.connect(
