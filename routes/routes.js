@@ -49,7 +49,7 @@ export default (app) => {
       ////////////////////////mail CONTROLLER///////////////////////////
 
    app.route("/send-email").post(sendMailController.sendMultiMail);
-   app.route("/email").post(sendMailController.sendMail);
+   app.route("/contact").post(sendMailController.sendMail);
 
       ////////////////////////user CONTROLLER///////////////////////////
 
