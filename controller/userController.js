@@ -20,11 +20,7 @@ exports.login = async(req, res, next) => {
 
     // await admin.save();
     res.status(200).json({ token: token, admin: { _id: user.id, email: user.email, role: user.role, image: user.image } });
-
-
 }
-
-
 
 exports.register = async(req, res, next) => {
 
@@ -35,7 +31,6 @@ exports.register = async(req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
     user.role = "role_Admin"
-
 
     await user.save();
     const token = user.generateTokens();
