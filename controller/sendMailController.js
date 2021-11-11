@@ -17,9 +17,8 @@ exports.sendMail = asyncHandler(async(req, res) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'samplateforme2021@gmail.com',
-
-            pass: 'PfeSamAdmin2021'
+            user: 'gb3ginfo@gmail.com',
+            pass: 'Epi20192020'
         }
     });
 
