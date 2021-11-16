@@ -75,6 +75,7 @@ exports.updateMembre = async(req, res) => {
 exports.updateImage = async(req, res) => {
     console.log(req.file.filename);
     console.log("hello");
+    console.log(req.params.id);
 
     const membre = await teamModel.findById(req.params.id)
     if (membre) {

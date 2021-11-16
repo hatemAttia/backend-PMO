@@ -17,13 +17,14 @@ exports.createFile = async (req, res, next) => {
     }
   });
 };
-exports.updateFile = async (req, res) => {
+
+exports.updateFileName = async (req, res) => {
   console.log(req.file.filename);
   console.log("hello");
 
   const file = await fileModel.findById(req.params.id);
   if (file) {
-    file.image = req.file.filename || file.image;
+    file.fileName = req.file.filename || file.fileName;
 
     const updatedimage = await file.save();
 

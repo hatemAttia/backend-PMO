@@ -23,8 +23,8 @@ exports.sendMail = asyncHandler(async(req, res) => {
     });
 
     var mailOptions = {
-        from: "samplateforme2021@gmail.com",
-        to: email,
+        from: "gb3ginfo@gmail.com",
+        to: "gb3ginfo@gmail.com",
         subject: "email from " + email + "name" + name + " about " + subject,
         text: message
     };
