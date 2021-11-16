@@ -4,7 +4,6 @@ const path = require("path")
 const storage = multer.diskStorage({
 
     destination: (req, file, callBack) => {
-
         console.log(file.filename);
         if (!file) {
             const error = new Error('No File')
@@ -18,17 +17,16 @@ const storage = multer.diskStorage({
     }
 })
 
-
 const uploadimages = multer({
 
     storage: storage,
-    // limits: { fileSize: 1000000 },
-    // fileFilter: function(req, file, cd) {
-    //     checkImageType(file, cb);
-    // }
+    limits: { fileSize: "50mb" },
+     fileFilter: function(req, file, cd) {
+       checkImageType(file, cb);
+     }
 })
 
-function checkImageType(file, cb) {
+function checkImageType(file, cb) { 
     // Allowed ext
     const filetypes = /jpeg|jpg|png|gif/;
     // Check ext

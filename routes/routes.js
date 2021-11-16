@@ -16,6 +16,7 @@ export default (app) => {
     app.route("/team/:id").put(teamController.updateMembre);
     app.route("/team/:id").delete(teamController.deleteMembre);
     app.route("/team").get(teamController.getAllMembres);
+    app.route("/team-count").get(teamController.teamCount);
     app.route("/team-img/:id").post(uploadimages.single("file"),teamController.updateImage);
 
      ////////////////////////NEWS CONTROLLER///////////////////////////
@@ -24,6 +25,8 @@ export default (app) => {
  app.route("/news/:id").put(newsController.updateStory);
  app.route("/news/:id").delete(newsController.deleteStory);
  app.route("/news").get(newsController.getAllstories);
+ app.route("/news-img/:id").post(uploadimages.single("file"),newsController.updateImage);
+
 
      ////////////////////////FILE CONTROLLER///////////////////////////
 
@@ -38,6 +41,8 @@ export default (app) => {
  app.route("/opportunity/:id").put(opportunityController.updateOpportunity);
  app.route("/opportunity/:id").delete(opportunityController.deleteOpportunity);
  app.route("/opportunity").get(opportunityController.getAllOpportunities);
+ app.route("/opportunity-img/:id").post(uploadimages.single("file"),opportunityController.updateImage);
+
  
    ////////////////////////FILE CONTROLLER///////////////////////////
 
