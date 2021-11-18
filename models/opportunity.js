@@ -12,6 +12,12 @@ const opportunitySchema = new Schema(
       title: {
         type: String,
       },
+      url: {
+        type: String,
+      },
+      isactive: {
+        type: Boolean,
+      }
   },
 
   { timestamps: true }

@@ -73,3 +73,11 @@ exports.updateFile = async (req, res) => {
     throw new Error("User not found");
   }
 };
+
+exports.fileCount = async(req, res, next) => {
+  const fileCount=await fileModel.countDocuments((count)=>count)
+  if(!fileCount){
+      res.status(400).json("Error getting objet")
+  }
+   res.status(200).json({"count":fileCount})
+}

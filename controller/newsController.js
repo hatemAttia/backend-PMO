@@ -80,3 +80,11 @@ exports.updateImage = async(req, res) => {
         throw new Error('User not found')
     }
 }
+
+exports.newsCount = async(req, res, next) => {
+    const newsCount=await newsModel.countDocuments((count)=>count)
+    if(!newsCount){
+        res.status(400).json("Error getting objet")
+    }
+     res.status(200).json({"count":newsCount})
+  }

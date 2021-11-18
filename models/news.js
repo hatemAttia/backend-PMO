@@ -12,6 +12,12 @@ const newsSchema = new Schema(
     description: {
         type: String,
       },
+      url: {
+        type: String,
+      },
+      isactive: {
+        type: Boolean,
+      }
   },
 
   { timestamps: true }

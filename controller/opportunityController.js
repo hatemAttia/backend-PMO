@@ -79,3 +79,11 @@ exports.updateImage = async(req, res) => {
         throw new Error('User not found')
     }
 }
+
+exports.opportunityCount = async(req, res, next) => {
+    const opportunityCount=await opportunityModel.countDocuments((count)=>count)
+    if(!opportunityCount){
+        res.status(400).json("Error getting objet")
+    }
+     res.status(200).json({"count":opportunityCount})
+  }
