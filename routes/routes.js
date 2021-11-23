@@ -72,7 +72,7 @@ export default (app) => {
   // app.route("/user").post(userController.register);
   app.route("/login").post(userController.login);
 
-
+   
     ////////////////////////SUBSCRIBE CONTROLLER///////////////////////////
 
     app.route("/subscribe").post(subscribeController.createSubscribe);

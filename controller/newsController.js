@@ -7,7 +7,8 @@ exports.createNews = async(req, res, next) => {
         title: req.body.title,
         description: req.body.description,
         image: 'team.png',
-      
+        isactive:req.body.isactive,
+        url:req.body.url,
     });
 
     await story.save((err) => {
@@ -48,6 +49,8 @@ exports.updateStory = async(req, res) => {
         story.title = req.body.title || membre.title
         story.description = req.body.description || membre.description
         story.image = req.body.image || membre.image
+        story.isactive = req.body.isactive || membre.isactive
+        story.url = req.body.url || membre.url
        
         const updatedStory = await story.save()
 

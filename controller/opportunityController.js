@@ -7,6 +7,8 @@ exports.createOpportunity = async(req, res, next) => {
         title: req.body.title,
         description: req.body.description,
         image: 'team.png',
+        isactive:req.body.isactive,
+        url:req.body.url,
     });
 
     await opportunity.save((err) => {
@@ -47,7 +49,8 @@ exports.updateOpportunity = async(req, res) => {
         opportunity.title = req.body.fullName || opportunity.title
         opportunity.description = req.body.description || opportunity.description
         opportunity.image = req.body.image || opportunity.image
-       
+        opportunity.isactive = req.body.isactive || membre.isactive
+        opportunity.url = req.body.url || membre.url
         const updatedOpportunity = await opportunity.save()
 
         res.json(updatedOpportunity)
