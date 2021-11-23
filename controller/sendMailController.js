@@ -17,15 +17,15 @@ exports.sendMail = asyncHandler(async(req, res) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'gb3ginfo@gmail.com',
-            pass: 'Epi20192020'
+            user: 'teampmo22@gmail.com',
+            pass: '@@teampmo2022'
         }
     });
 
     var mailOptions = {
-        from: "gb3ginfo@gmail.com",
-        to: "gb3ginfo@gmail.com",
-        subject: "email from " + email + "name" + name + " about " + subject,
+        from: email,
+        to: "teampmo22@gmail.com",
+        subject: "email from " + email + " name " + name + " about " + subject,
         text: message
     };
 
@@ -52,16 +52,14 @@ exports.sendMultiMail = asyncHandler(async(req, res) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'gb3ginfo@gmail.com',
-            pass: 'Epi20192020'
+            user: 'teampmo22@gmail.com',
+            pass: '@@teampmo2022'
         }
     });
 
     let histoMail = new histoMailModel({
         subject:subject,
-        message: message,
-        
-      
+        message: message,    
     });
 
     await histoMail.save((err) => {
@@ -73,11 +71,12 @@ exports.sendMultiMail = asyncHandler(async(req, res) => {
 
         }
     })
+
     const membreMail =await teamModel.find()
     .select("email")
     membreMail.forEach(element => {
         var mailOptions = {
-            from: "gb3ginfo@gmail.com",
+            from: "teampmo22@gmail.com",
             to: element.email,
             subject:subject,
             text: message

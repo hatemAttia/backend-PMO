@@ -1,4 +1,5 @@
 const welcomeController = require('../controller/welcomeController');
+const statsController = require('../controller/statsController');
 const teamController = require('../controller/teamController');
 const newsController = require('../controller/newsController');
 const fileController = require('../controller/fileController');
@@ -77,6 +78,8 @@ export default (app) => {
     app.route("/subscribe").post(subscribeController.createSubscribe);
     app.route("/subscribe").get(subscribeController.getAllSubscribes);
  app.route("/subscribe-count").get(subscribeController.subscribeCount);
+    ////////////////////////Stats CONTROLLER///////////////////////////
+    app.route("/stats").get(statsController.statscount);
 
  
 
