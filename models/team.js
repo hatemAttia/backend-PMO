@@ -9,7 +9,7 @@ const teamSchema = new Schema(
     },
     email: {
       type: String,
-      required:true
+     // required:true
     },
     facebook: {
       type: String,

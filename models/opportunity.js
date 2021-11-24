@@ -12,6 +12,12 @@ const opportunitySchema = new Schema(
     title: {
       type: String,
     },
+    adresse: {
+      type: String,
+    },
+    date: {
+      type: Date,
+    },
     url: {
       type: String,
     },
