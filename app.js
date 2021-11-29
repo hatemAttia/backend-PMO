@@ -7,11 +7,11 @@ const cors = require("cors");
 import routes from "./routes/routes";
 // Gives us access to variables set in the .env file
 // Middleware for request authentication.
-
+require('dotenv').config();
 var app = express();
 const mongoose = require("mongoose");
 // Set up mongoose connection
-let dev_db_url = 'mongodb+srv://dbBasma:@basma123@dbpmo.fb9qa.mongodb.net/dbPmo?retryWrites=true&w=majority';
+let dev_db_url = '';
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
 mongoose.connect(

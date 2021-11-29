@@ -14,21 +14,21 @@ exports.statscount = async (req, res, next) => {
   const opportunityCount = await opportunityModel.countDocuments(
     (count) => count
   );
-
   if (
     !membreCount ||
     !fileCount ||
     !subscribeCount ||
     !newsCount ||
     !opportunityCount
-  ) {
+  ) 
+  {
     res.status(400).json("Error getting objet");
   }
   res.status(200).json({
-       teamcount: membreCount,
-       filecount: fileCount,
-       subscribecount: subscribeCount,
-       newscount: newsCount,
-       opportunitycount: opportunityCount,
-     });
+    teamcount: membreCount,
+    filecount: fileCount,
+    subscribecount: subscribeCount,
+    newscount: newsCount,
+    opportunitycount: opportunityCount,
+  });
 };

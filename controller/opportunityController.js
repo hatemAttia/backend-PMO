@@ -6,7 +6,7 @@ exports.createOpportunity = async(req, res, next) => {
     let opportunity = new opportunityModel({
         title: req.body.title,
         description: req.body.description,
-        adresse: req.body.adresse,
+        adress: req.body.adresse,
         date: req.body.date,
         image: 'opportunity.png',
         isactive:req.body.isactive,
@@ -49,12 +49,12 @@ exports.updateOpportunity = async(req, res) => {
     const opportunity = await opportunityModel.findById(req.params.id)
     if (opportunity) {
         opportunity.title = req.body.title || opportunity.title
-        opportunity.adresse = req.body.adresse || opportunity.adresse
+        opportunity.adress = req.body.adress || opportunity.adress
         opportunity.date = req.body.date || opportunity.date
         opportunity.description = req.body.description || opportunity.description
         opportunity.image = req.body.image || opportunity.image
-        opportunity.isactive = req.body.isactive || membre.isactive
-        opportunity.url = req.body.url || membre.url
+        opportunity.isactive = req.body.isactive || opportunity.isactive
+        opportunity.url = req.body.url || opportunity.url
         const updatedOpportunity = await opportunity.save()
 
         res.json(updatedOpportunity)

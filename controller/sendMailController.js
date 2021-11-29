@@ -2,6 +2,7 @@ var nodemailer = require('nodemailer');
 const asyncHandler = require('express-async-handler');
 const teamModel = require("../models/team");
 const histoMailModel = require("../models/histoMail");
+require('dotenv').config();
 
 exports.sendMail = asyncHandler(async(req, res) => {
 
@@ -17,14 +18,14 @@ exports.sendMail = asyncHandler(async(req, res) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'teampmo22@gmail.com',
-            pass: '@@teampmo2022'
+            user: process.env.Mail ,
+            pass: process.env.Mp_Mail
         }
     });
 
     var mailOptions = {
         from: email,
-        to: "teampmo22@gmail.com",
+        to: process.env.Mail,
         subject: "email from " + email + " name " + name + " about " + subject,
         text: message
     };
@@ -52,8 +53,8 @@ exports.sendMultiMail = asyncHandler(async(req, res) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'teampmo22@gmail.com',
-            pass: '@@teampmo2022'
+            user: process.env.Mail ,
+            pass: process.env.Mp_Mail
         }
     });
 
@@ -76,7 +77,7 @@ exports.sendMultiMail = asyncHandler(async(req, res) => {
     .select("email")
     membreMail.forEach(element => {
         var mailOptions = {
-            from: "teampmo22@gmail.com",
+            from: process.env.Mail,
             to: element.email,
             subject:subject,
             text: message
