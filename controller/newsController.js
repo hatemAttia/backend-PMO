@@ -8,7 +8,7 @@ exports.createNews = async(req, res, next) => {
         description: req.body.description,
         adress: req.body.adress,
         date: req.body.date,
-        image: 'team.png',
+        image: 'post.jpg',
         isactive:req.body.isactive,
         url:req.body.url,
     });
