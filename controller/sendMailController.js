@@ -1,6 +1,6 @@
 var nodemailer = require('nodemailer');
 const asyncHandler = require('express-async-handler');
-const teamModel = require("../models/team");
+const subscriberModel = require("../models/subscribe");
 const histoMailModel = require("../models/histoMail");
 require('dotenv').config();
 
@@ -73,7 +73,7 @@ exports.sendMultiMail = asyncHandler(async(req, res) => {
         }
     })
 
-    const membreMail =await teamModel.find()
+    const membreMail =await subscriberModel.find()
     .select("email")
     membreMail.forEach(element => {
         var mailOptions = {
