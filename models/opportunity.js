@@ -7,11 +7,23 @@ const opportunitySchema = new Schema(
       type: String,
     },
     description: {
-        type: String,
-      },
-      title: {
-        type: String,
-      },
+      type: String,
+    },
+    title: {
+      type: String,
+    },
+    adress: {
+      type: String,
+    },
+    date: {
+      type: Date,
+    },
+    url: {
+      type: String,
+    },
+    isactive: {
+      type: Boolean,
+    },
   },
 
   { timestamps: true }

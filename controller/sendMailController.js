@@ -1,7 +1,8 @@
 var nodemailer = require('nodemailer');
 const asyncHandler = require('express-async-handler');
-const teamModel = require("../models/team");
+const subscriberModel = require("../models/subscribe");
 const histoMailModel = require("../models/histoMail");
+require('dotenv').config();
 
 exports.sendMail = asyncHandler(async(req, res) => {
 
@@ -17,16 +18,15 @@ exports.sendMail = asyncHandler(async(req, res) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'samplateforme2021@gmail.com',
-
-            pass: 'PfeSamAdmin2021'
+            user: process.env.Mail ,
+            pass: process.env.Mp_Mail
         }
     });
 
     var mailOptions = {
-        from: "samplateforme2021@gmail.com",
-        to: email,
-        subject: "email from " + email + "name" + name + " about " + subject,
+        from: email,
+        to: process.env.Mail,
+        subject: "email from " + email + " name " + name + " about " + subject,
         text: message
     };
 
@@ -53,16 +53,14 @@ exports.sendMultiMail = asyncHandler(async(req, res) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'gb3ginfo@gmail.com',
-            pass: 'Epi20192020'
+            user: process.env.Mail ,
+            pass: process.env.Mp_Mail
         }
     });
 
     let histoMail = new histoMailModel({
         subject:subject,
-        message: message,
-        
-      
+        message: message,    
     });
 
     await histoMail.save((err) => {
@@ -74,11 +72,12 @@ exports.sendMultiMail = asyncHandler(async(req, res) => {
 
         }
     })
-    const membreMail =await teamModel.find()
+
+    const membreMail =await subscriberModel.find()
     .select("email")
     membreMail.forEach(element => {
         var mailOptions = {
-            from: "gb3ginfo@gmail.com",
+            from: process.env.Mail,
             to: element.email,
             subject:subject,
             text: message

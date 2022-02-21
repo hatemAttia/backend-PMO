@@ -6,8 +6,11 @@ exports.createNews = async(req, res, next) => {
     let story = new newsModel({
         title: req.body.title,
         description: req.body.description,
-        image: 'team.png',
-      
+        adress: req.body.adress,
+        date: req.body.date,
+        image: 'post.jpg',
+        isactive:req.body.isactive,
+        url:req.body.url,
     });
 
     await story.save((err) => {
@@ -45,9 +48,13 @@ exports.updateStory = async(req, res) => {
 
     const story = await newsModel.findById(req.params.id)
     if (story) {
-        story.title = req.body.title || membre.title
-        story.description = req.body.description || membre.description
-        story.image = req.body.image || membre.image
+        story.title = req.body.title || story.title
+        story.description = req.body.description || story.description
+        story.adress = req.body.adress || story.adress
+        story.date = req.body.date || story.date
+        story.image = req.body.image || story.image
+        story.isactive = req.body.isactive 
+        story.url = req.body.url || story.url
        
         const updatedStory = await story.save()
 
@@ -80,3 +87,11 @@ exports.updateImage = async(req, res) => {
         throw new Error('User not found')
     }
 }
+
+exports.newsCount = async(req, res, next) => {
+    const newsCount=await newsModel.countDocuments((count)=>count)
+    if(!newsCount){
+        res.status(400).json("Error getting objet")
+    }
+     res.status(200).json({"count":newsCount})
+  }

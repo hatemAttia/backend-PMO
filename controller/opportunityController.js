@@ -6,7 +6,11 @@ exports.createOpportunity = async(req, res, next) => {
     let opportunity = new opportunityModel({
         title: req.body.title,
         description: req.body.description,
-        image: 'team.png',
+        adress: req.body.adresse,
+        date: req.body.date,
+        image: 'post.jpg',
+        isactive:req.body.isactive,
+        url:req.body.url,
     });
 
     await opportunity.save((err) => {
@@ -44,10 +48,13 @@ exports.updateOpportunity = async(req, res) => {
 
     const opportunity = await opportunityModel.findById(req.params.id)
     if (opportunity) {
-        opportunity.title = req.body.fullName || opportunity.title
+        opportunity.title = req.body.title || opportunity.title
+        opportunity.adress = req.body.adress || opportunity.adress
+        opportunity.date = req.body.date || opportunity.date
         opportunity.description = req.body.description || opportunity.description
         opportunity.image = req.body.image || opportunity.image
-       
+        opportunity.isactive = req.body.isactive || opportunity.isactive
+        opportunity.url = req.body.url || opportunity.url
         const updatedOpportunity = await opportunity.save()
 
         res.json(updatedOpportunity)
@@ -79,3 +86,11 @@ exports.updateImage = async(req, res) => {
         throw new Error('User not found')
     }
 }
+
+exports.opportunityCount = async(req, res, next) => {
+    const opportunityCount=await opportunityModel.countDocuments((count)=>count)
+    if(!opportunityCount){
+        res.status(400).json("Error getting objet")
+    }
+     res.status(200).json({"count":opportunityCount})
+  }

@@ -7,11 +7,23 @@ const newsSchema = new Schema(
       type: String,
     },
     image: {
-        type: String,
-      },
+      type: String,
+    },
     description: {
-        type: String,
-      },
+      type: String,
+    },
+    url: {
+      type: String,
+    },
+    isactive: {
+      type: Boolean,
+    },
+    adress: {
+      type: String,
+    },
+    date: {
+      type: Date,
+    },
   },
 
   { timestamps: true }

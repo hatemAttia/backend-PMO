@@ -75,6 +75,7 @@ exports.updateMembre = async(req, res) => {
 exports.updateImage = async(req, res) => {
     console.log(req.file.filename);
     console.log("hello");
+    console.log(req.params.id);
 
     const membre = await teamModel.findById(req.params.id)
     if (membre) {
@@ -91,4 +92,12 @@ exports.updateImage = async(req, res) => {
         res.status(404)
         throw new Error('User not found')
     }
+}
+
+exports.teamCount = async(req, res, next) => {
+    const membreCount=await teamModel.countDocuments((count)=>count)
+    if(!membreCount){
+        res.status(400).json("Error getting objet")
+    }
+     res.status(200).json({"count":membreCount})
 }
