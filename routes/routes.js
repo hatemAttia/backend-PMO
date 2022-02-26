@@ -69,8 +69,13 @@ export default (app) => {
 
  ////////////////////////user CONTROLLER///////////////////////////
 
-  // app.route("/user").post(userController.register);
+  app.route("/user").post(userController.register);
   app.route("/login").post(userController.login);
+  app.route("/pwdsuper-user").put(userController.changerpwdsuper);
+  app.route("/pwd-user").put(userController.changerpwdadmin);
+  app.route("/user/:id").put(userController.updateAdmin);
+  app.route("/user/:id").delete(userController.deleteAdmin);
+  app.route("/user-all").get(userController.getAllAdmins);
 
    
     ////////////////////////SUBSCRIBE CONTROLLER///////////////////////////
