@@ -1,96 +1,157 @@
-const mongoose = require('mongoose');
-const express = require('express');
-const userModel = require('../models/user');
-const bcrypt = require('bcryptjs');
+const mongoose = require("mongoose");
+const express = require("express");
+const userModel = require("../models/user");
+const bcrypt = require("bcryptjs");
 //const joi = require('joi');
 
-const jwt = require('jsonwebtoken');
-const secret = 'test';
-const _ = require('lodash');
+const jwt = require("jsonwebtoken");
+const secret = "test";
+const _ = require("lodash");
 
-//hedhi ili nadhreb aleha 
-exports.login = async(req, res, next) => {
+//hedhi ili nadhreb aleha
+exports.login = async (req, res, next) => {
+  let user = await userModel.findOne({ email: req.body.email });
+  if (!user) {
+    return res.status(400).json({ message: "Invalid Email or Password " });
+  }
+  const checkPassword = await bcrypt.compare(req.body.password, user.password);
+  if (!checkPassword) {
+    return res.status(400).json({ message: "Invalid Email or Password " });
+  }
 
-    let user = await userModel.findOne({ email: req.body.email });
-    if (!user) { return res.status(400).json({ message: "Invalid Email or Password " }); }
-    const checkPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!checkPassword) { return res.status(400).json({ message: "Invalid Email or Password " }); }
+  const token = user.generateTokens();
 
-    const token = user.generateTokens()
+  // await admin.save();
+  res.status(200).json({
+    token: token,
+    admin: {
+      _id: user.id,
+      email: user.email,
+      role: user.role,
+      image: user.image,
+    },
+  });
+};
 
-    // await admin.save();
-    res.status(200).json({ token: token, admin: { _id: user.id, email: user.email, role: user.role, image: user.image } });
-}
+exports.register = async (req, res, next) => {
+  const olduser = await userModel.findOne({ email: req.body.email });
+  if (olduser) {
+    return res.status(400).json({ message: "Email already exists" });
+  }
 
-exports.register = async(req, res, next) => {
+  const user = new userModel(req.body);
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+  user.role = req.body.role;
 
-    const olduser = await userModel.findOne({ email: req.body.email });
-    if (olduser) { return res.status(400).json({ message: "Email already exists" }); }
+  await user.save();
+  const token = user.generateTokens();
+  res.header("x-auth-token", token).send(_.pick(user, ["_id", "email"]));
+};
+exports.changerpwdsuper = async (req, res, next) => {
+  const user = await userModel.findOne({ email: req.body.email });
+  if (!user) {
+    return res.status(400).json({ message: "Email doesn't exists" });
+  }
+  const checkPassword = await bcrypt.compare(req.body.password, user.password);
+  if (!checkPassword) {
+    return res.status(400).json({ message: "Invalid Email or Password " });
+  }
+  const salt = await bcrypt.genSalt(10);
+  const verifPassword = await bcrypt.compare(
+    req.body.oldpassword,
+    user.password
+  );
 
-    const user = new userModel(req.body);
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
-    user.role= req.body.role;
-
+  if (!verifPassword) {
+    return res.status(400).json({ message: "Invalid old password " });
+  } else {
+    user.password = await bcrypt.hash(req.body.Confirmpassword, salt);
     await user.save();
     const token = user.generateTokens();
-    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'email']));
+    res.header("x-auth-token", token).send(_.pick(user, ["_id", "email"]));
+  }
+};
 
-}
-exports.changerpwdsuper = async(req, res, next) => {
+exports.changerpwdadmin = async (req, res, next) => {
+  console.log(req.body);
+  const user = await userModel.findOne({ email: req.body.email });
+  if (!user) {
+    return res.status(400).json({ message: "Email doesn't exists" });
+  }
 
-    const user = await userModel.findOne({ email: req.body.email });
-    if (!user) { return res.status(400).json({ message: "Email doesn't exists" }); }
-    const checkPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!checkPassword) { return res.status(400).json({ message: "Invalid Email or Password " }); }
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(req.body.Confirmepassword, salt);
+  const salt = await bcrypt.genSalt(10);
+
+  const verifPassword = await bcrypt.compare(
+    req.body.oldpassword,
+    user.password
+  );
+
+  if (!verifPassword) {
+    return res.status(400).json({ message: "ancien mot de passe erroné " });
+  } else {
+    user.password = await bcrypt.hash(req.body.Confirmpassword, salt);
     await user.save();
     const token = user.generateTokens();
-    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'email']));
-}
+    res.header("x-auth-token", token).send(_.pick(user, ["_id", "email"]));
+  }
+};
 
-exports.changerpwdadmin = async(req, res, next) => {
-    const user = await userModel.findOne({ email: req.body.email });
-    if (!user) { return res.status(400).json({ message: "Email doesn't exists" }); }
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(req.body.Confirmepassword, salt);
-    await user.save();
-    const token = user.generateTokens();
-    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'email']));
-}
+exports.updateAdmin = async (req, res) => {
+  console.log(req.params.id);
+  console.log("hello");
+  const admin = await userModel.findById(req.params.id);
+  if (admin) {
+    admin.fullName = req.body.fullName || admin.fullName;
+    admin.email = req.body.email || admin.email;
+    admin.phonenumber = req.body.phonenumber || admin.phonenumber;
+    const updatedAdmin = await admin.save();
+    res.json(updatedAdmin);
+  } else {
+    res.status(404);
+    throw new Error("Admin not found");
+  }
+};
 
-exports.updateAdmin = async(req, res) => {
-    console.log(req.params.id);
-    console.log("hello");
-    const admin = await userModel.findById(req.params.id)
-    if (admin) {
-        admin.fullName = req.body.fullName || admin.fullName
-        admin.email = req.body.email || admin.email
-        admin.phonenumber = req.body.phonenumber || admin.phonenumber
-        const updatedAdmin = await admin.save()
-         res.json(updatedAdmin)
-    } else {
-        res.status(404)
-        throw new Error('Admin not found')
-    }
-}
+exports.deleteAdmin = async (req, res) => {
+  const admin = await userModel.findById(req.params.id);
+  console.log(req.param.id);
 
-exports.deleteAdmin = async(req, res) => {
-    const admin = await userModel.findById(req.params.id)
-    console.log(req.param.id);
+  if (admin) {
+    await admin.remove();
+    res.json({ message: "admin removed" });
+  } else {
+    res.status(404);
+    throw new Error("admin. not found");
+  }
+};
+exports.getAllAdmins = async (req, res, next) => {
+  await userModel
+    .find()
+    .then((objet) => res.status(200).json(objet))
+    .catch((err) => res.status(400).json("Error getting objet"));
+};
 
-    if (admin) {
-        await admin.remove()
-        res.json({ message: 'admin removed' })
-    } else {
-        res.status(404)
-        throw new Error('admin. not found')
-    }
-}
-exports.getAllAdmins = async(req, res, next) => {
-    await userModel.find()
-        .then(objet => res.status(200).json(objet))
-        .catch(err => res.status(400).json("Error getting objet"))
-}
+exports.getOneAdmin = async (req, res, next) => {
+  await userModel
+    .findById(req.params.id)
+    .then((objet) => res.status(200).json(objet))
+    .catch((err) => res.status(400).json("Error getting objet"));
+};
+exports.updateImage = async (req, res) => {
+  console.log(req.file.filename);
+  console.log("hello");
+  console.log(req.params.id);
 
+  const membre = await userModel.findById(req.params.id);
+  if (membre) {
+    membre.image = req.file.filename || membre.image;
+
+    const updatedimage = await membre.save();
+
+    res.json(updatedimage);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+};
